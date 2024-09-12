@@ -1,0 +1,50 @@
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <!-- Card do Livro -->
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/images/{{livros.genero}}_img.jpg" id="img-atualizar" class="card-img-top"
+                    alt="Imagem do Livro">
+                <div class="card-body">
+                    <h5 class="card-title"><b>{{livros.titulo}}</b></h5>
+                    <p class="card-text"><b>Autor:</b> {{livros.autor}}</p>
+                    <p class="card-text"><b>Editora: </b>{{livros.editora}}</p>
+                    <p class="card-text"><b>Gênero:</b> {{livros.genero}}</p>
+                    {{#if livros.percentual}}
+                    <p class="card-text"><b>Progresso Atual:</b> {{livros.percentual}}%</p>
+                    {{else}}
+                    <p class="card-text"><b>Progresso Atual:</b> 0%</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulário de Atualização de Progresso -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Atualizar Progresso do Livro</h5>
+                    <form action="/livro/atualizarProgresso/{{livros._id}}" method="POST">
+                        <div class="mb-3">
+                            <label>Atual(%)</label>
+                            <div class="progress">
+                                <div class="progress-bar bg-dark" style="width:{{livros.progresso}}%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="novoProgresso" class="form-label">Novo Progresso (%)</label>
+                            <input type="number" class="form-control" id="novoProgresso" name="percentual" min="0"
+                                max="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comentario" class="form-label">Comentário</label>
+                            <textarea class="form-control" id="comentario" name="comentario" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-outline-dark">Salvar Atualização</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

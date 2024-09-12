@@ -1,0 +1,84 @@
+<div class="container mt-5 pt-5">
+    <h1>Meus livros</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{#if usuario.length}}
+            {{#each usuario}}
+            <div class="card mb-4">
+                <img src="{{this.avatar}}" class="card-img-top" alt="Foto do Perfil">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.nome}}</h5>
+                    <a href="/usuario/alteraUsuario/{{this._id}}" class="btn btn-sm btn-dark">Editar perfil</a>
+                </div>
+            </div>
+            {{/each}}
+            {{else}}
+            <div class="card mb-4">
+                <img src="/images/avatar-padrao.png" class="card-img-top" alt="Foto do Perfil">
+                <div class="card-body">
+                    <a href="/usuario/cadUsuario" class="btn btn-sm btn-dark">Criar perfil</a>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+
+        <div class="col-md-8">
+            {{#if livros.length}}
+            <div class="row">
+                {{#each livros}}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="/images/{{this.genero}}_img.jpg" class="card-img-top card-img-custom"
+                            alt="{{this.titulo}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.titulo}}</h5>
+                            <p class="card-text">Progresso: {{this.progresso}}%</p>
+                            <div class="d-grid gap-2">
+                                <a href="/livro/consulta/{{this._id}}" class="btn btn-sm btn-dark">Ver Detalhes</a>
+                                <a class="btn btn-sm btn-outline-dark"
+                                    href="/livro/atualizarProgresso/{{this._id}}">Adicionar Atualizações</a>
+                                <p>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal{{this._id}}"
+                                        class="mx-1"><i class="bi bi-trash2-fill" id="icone-bi"> deletar</i></a>
+                                    <a href="/livro/alteraLivro/{{this._id}}"><i class="bi bi-bookmark-heart-fill"
+                                            id="icone-bi"> alterar</i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="deleteModal{{this._id}}" tabindex="-1"
+                    aria-labelledby="deleteModalLabel{{this._id}}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteModalLabel{{this._id}}">Atenção!!</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Você deseja realmente excluir o livro {{this.titulo}}? Você perderá todas as informações e progresso.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Não,
+                                    cancele.</button>
+                                <a href="/nota/deleta/{{this._id}}"><button class="btn btn-danger">Sim,
+                                        delete.</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            {{else}}
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Nenhum livro adicionado</h5>
+                    <a href="/livro/cadLivro" class="btn btn-sm btn-dark">Adicionar Livro</a>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

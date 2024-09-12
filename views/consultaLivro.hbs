@@ -1,0 +1,48 @@
+<div class="container mt-4 pt-5">
+    <div class="card mb-3" style="border: 1px solid var(--cor-primaria);">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="/images/{{livro.genero}}_img.jpg" class="img-fluid rounded-start" id="img-consulta"
+                    alt="Imagem do Livro">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{livro.titulo}}</h5>
+                    <p class="card-text"><strong>Autor:</strong> {{livro.autor}}</p>
+                    <p class="card-text"><strong>Gênero:</strong> {{livro.genero}}</p>
+                    <p class="card-text"><strong>Editora:</strong> {{livro.editora}}</p>
+                    <p class="card-text"><strong>Inicio da Leitura:</strong> {{livro.data}}</p>
+                    <p class="card-text">{{livro.texto}}</p>
+                    <p class="card-text">Progresso:</p>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-dark" role="progressbar" style="width:{{livro.progresso}}%;">
+                            {{livro.progresso}}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Atualizações de Leitura</h2>
+
+    {{#if livro.progressoHistorico}}
+    {{#each livro.progressoHistorico}}
+    <div class="card mb-2" style="border: 1px solid var(--cor-primaria);">
+        <div class="card-body">
+            <p class="card-text" id="comentario">{{this.comentario}}</p>
+            <p class="card-text"><small class="text-muted">{{this.data}}</small></p>
+            <div class="progress mb-2">
+                <div class="progress-bar bg-dark" role="progressbar" style="width: {{this.percentual}}%;">
+                    {{this.percentual}}%
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+    <p class="text-center text-muted">Você ainda não adicionou atualizações de leitura</p>
+    <p class="text-center"><a class="btn btn-sm btn-outline-dark"
+            href="/livro/atualizarProgresso/{{livro._id}}">Adicionar Atualizações</a></p>
+    {{/if}}
+</div>

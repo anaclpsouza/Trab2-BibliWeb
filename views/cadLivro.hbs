@@ -1,0 +1,57 @@
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cadastrar Novo Livro</h5>
+                    <form action="/livro/cadLivro" method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="data" class="form-label">Data de inicio da leitura</label>
+                            <input type="date" class="form-control" id="data" name="data" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genero" class="form-label">Gênero</label>
+                            <select class="form-select" id="genero" name="genero" required>
+                                <option value="" disabled selected>Escolha um gênero</option>
+                                <option value="ficcao">Ficção</option>
+                                <option value="fantasia">Fantasia</option>
+                                <option value="romance">Romance</option>
+                                <option value="suspense">Suspense</option>
+                                <option value="distopia">Distopia</option>
+                                <option value="terror">Terror</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="texto" class="form-label">Texto</label>
+                            <textarea class="form-control" id="texto" name="texto" rows="3" required></textarea>
+                        </div>
+                        {{!-- <div class="mb-3">
+                            <label for="progresso" class="form-label">Progresso (%)</label>
+                            <input type="number" class="form-control" id="progresso" name="progresso" min="0" max="100"
+                                required>
+                        </div> --}}
+                        <div class="mb-3">
+                            <label for="autor" class="form-label">Autor</label>
+                            <input type="text" class="form-control" id="autor" name="autor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editora" class="form-label">Editora</label>
+                            <input type="text" class="form-control" id="editora" name="editora" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagem" class="form-label">Imagem</label>
+                            <input type="text" class="form-control" id="imagem" name="imagem" value="">
+                        </div>
+                        <button type="submit" class="btn btn-dark">Salvar Livro</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
