@@ -24,7 +24,6 @@ exports.consulta = async function (req, res) {
     var id = req.params._id
     var livro = await Livro.consulta(id)
 
-
     contexto = {
         titulo_pagina: "Detalhes",
         livro: livro,
@@ -37,11 +36,9 @@ exports.get_atualizarProgresso = async function (req, res) {
     var id = req.params._id
     var livro = await Livro.consulta(id)
 
-
     const contexto = {
         titulo_pagina: "Atualizar Progresso",
         livros: livro
-
     };
     res.render('atualizarProgresso', contexto);
 };
@@ -50,16 +47,15 @@ exports.get_atualizarProgresso = async function (req, res) {
 exports.post_atualizarProgresso = async function (req, res) {
     const { percentual, comentario } = req.body;
     const id = req.params._id;
-    
+
+    var livro = await Livro.consulta(id)
+
+    if (percentual> livro.progresso) {
+
+    }
 
     await Livro.atualizarProgresso(id, percentual, comentario)
 
-    // if (resultado) {
-    //     res.json({ mensagem: 'Progresso adicionado com sucesso!' });
-    // } else {
-    //     res.json({ mensagem: 'Livro não encontrado.' });
-    // }
-   
     res.redirect('/')
 }
 
@@ -68,14 +64,32 @@ exports.deleta = async function (req, res) {
     var id = req.params._id
     await Livro.deleta(id);
 
-
-    // retorno = {
-    //     retorno: "Livro Deletado!"
-    // }
-
-    // res.json(retorno);
     res.redirect('/');
 }
 
+exports.get_criarResenha = async function (req, res) {
+    var id = req.params._id
+    var livro = await Livro.consulta(id)
+
+    const contexto = {
+        titulo_pagina: "Atualizar Progresso",
+        livros: livro,
+
+    };
+
+    res.render('atualizarProgresso', contexto);
+}
+
+
+exports.post_criarResenha = async function (req, res) {
+    const resenha = req.body.resenha;
+    const estrela = req.body.estrela;
+    const titulo_resenha = req.body.titulo_resenha
+    const id = req.params._id;
+
+    await Livro.criarResenha(id,  titulo_resenha, resenha, estrela)
+
+    res.redirect('/')
+}
 
 

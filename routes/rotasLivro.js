@@ -10,6 +10,10 @@ router.get('/atualizarProgresso/:_id', controllerLivro.get_atualizarProgresso);
 
 router.post('/atualizarProgresso/:_id', controllerLivro.post_atualizarProgresso);
 
+router.get('/criarResenha/:_id', controllerLivro.get_criarResenha);
+
+router.post('/criarResenha/:_id', controllerLivro.post_criarResenha);
+
 router.get('/consulta/:_id', controllerLivro.consulta);
 
 router.get('/deleta/:_id', controllerLivro.deleta);

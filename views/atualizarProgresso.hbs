@@ -10,8 +10,8 @@
                     <p class="card-text"><b>Autor:</b> {{livros.autor}}</p>
                     <p class="card-text"><b>Editora: </b>{{livros.editora}}</p>
                     <p class="card-text"><b>Gênero:</b> {{livros.genero}}</p>
-                    {{#if livros.percentual}}
-                    <p class="card-text"><b>Progresso Atual:</b> {{livros.percentual}}%</p>
+                    {{#if livros.progresso}}
+                    <p class="card-text"><b>Progresso Atual:</b> {{livros.progresso}}%</p>
                     {{else}}
                     <p class="card-text"><b>Progresso Atual:</b> 0%</p>
                     {{/if}}
@@ -28,21 +28,58 @@
                         <div class="mb-3">
                             <label>Atual(%)</label>
                             <div class="progress">
-                                <div class="progress-bar bg-dark" style="width:{{livros.progresso}}%"></div>
+                                <div class="progress-bar bg-dark" style="width:{{livros.progresso}}%">
+                                    {{livros.progresso}}%
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="novoProgresso" class="form-label">Novo Progresso (%)</label>
-                            <input type="number" class="form-control" id="novoProgresso" name="percentual" min="0"
-                                max="100" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="comentario" class="form-label">Comentário</label>
-                            <textarea class="form-control" id="comentario" name="comentario" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-outline-dark">Salvar Atualização</button>
+                            <div class="mb-3">
+                                <label for="novoProgresso" class="form-label">Novo Progresso (%)</label>
+                                <input type="number" class="form-control" id="novoProgresso" name="percentual" min="0"
+                                    max="100" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comentario" class="form-label">Comentário</label>
+                                <textarea class="form-control" id="comentario" name="comentario" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-outline-dark">Salvar Atualização</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Adicionar resenha</h5>
+                    <p> Ao adicionar resenha, o progresso do livro é dado como 100% e não é possível
+                        realizar atualizações.</p>
+                    <form action="/livro/criarResenha/{{livros._id}}" method="POST">
+                        <label for="titulo_resenha" class="form-label">Titulo</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo_resenha"></input>
+                        <div class="estrela-options">
+                            <input type="radio" class="btn-check" name="estrela" id="estrela1" value="1">
+                            <label class="estrela-label" for="estrela1">&#9733;</label>
 
+                            <input type="radio" class="btn-check" name="estrela" id="estrela2" value="2">
+                            <label class="estrela-label" for="estrela2">&#9733;</label>
+
+                            <input type="radio" class="btn-check" name="estrela" id="estrela3" value="3">
+                            <label class="estrela-label" for="estrela3">&#9733;</label>
+
+                            <input type="radio" class="btn-check" name="estrela" id="estrela4" value="4">
+                            <label class="estrela-label" for="estrela4">&#9733;</label>
+
+                            <input type="radio" class="btn-check" name="estrela" id="estrela5" value="5">
+                            <label class="estrela-label" for="estrela5">&#9733;</label>
+                        </div>
+
+                        <div class="mb-3 pt-3">
+                            <label for="resenha" class="form-label">Resenha</label>
+                            <textarea class="form-control" id="comentario" name="resenha" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Enviar Resenha</button>
+                    </form>
                 </div>
             </div>
         </div>

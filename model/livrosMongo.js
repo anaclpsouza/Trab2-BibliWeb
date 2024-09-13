@@ -89,6 +89,25 @@ class LivroMongo {
         const livros = await colecao.find({}).toArray();
         return livros;
     }
+
+    async criarResenha(id, titulo_resenha, resenha, estrela, ) {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const livro = await colecao.updateOne(
+            { _id: new mongodb.ObjectId(id) },
+            {
+                $set: { progresso: 100 }, 
+                $push: {
+                    resenha: { 
+                        titulo_resenha,
+                        resenha,
+                        estrela,
+                        dataFim: new Date()
+                    }
+                }
+            }
+        );
+    }
 }
 
 module.exports = new LivroMongo();

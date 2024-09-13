@@ -1,7 +1,5 @@
 @import url('https://fonts.cdnfonts.com/css/martian-mono');
-
 @import url('https://fonts.cdnfonts.com/css/red-hat-mono');
-
 
 :root {
   --cor-primaria: #2F4F4F;
@@ -12,16 +10,28 @@
   /* Preto */
 }
 
-
-
 body {
   background-color: var(--cor-secundaria);
-  font-family: 'Red Hat Mono', sans-serif;
+  /* font-family: 'Red Hat Mono', sans-serif; */
   color: var(--cor-quaternaria);
 }
 
 h1 {
   font-family: 'Martian Mono', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: initial;
+}
+
+:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .navbar {
@@ -33,7 +43,6 @@ h1 {
 
 .navbar-nav .nav-link {
   color: var(--cor-quaternaria);
-  padding: 10px 15px;
   transition: color 0.3s ease;
 }
 
@@ -124,20 +133,54 @@ h1 {
   border-color: var(--cor-primaria);
 }
 
-.avatar-option input[type="radio"]:checked + .avatar-label {
+.avatar-option input[type="radio"]:checked+.avatar-label {
   border-color: var(--cor-primaria);
 }
 
-#comentario{
+#comentario {
   border-radius: 5px;
   background-color: rgb(238, 238, 238);
   padding: 10px;
 }
 
-#icone-bi{
+#icone-bi {
   color: var(--cor-quaternaria)
 }
 
-a {
-  text-decoration: none;
+.estrela-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  direction: rtl;
+  justify-content: flex-end;
+}
+
+.estrela-label {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #d3d3d3; 
+}
+
+
+.btn-check {
+  display: none;
+}
+
+
+.btn-check:checked ~ .estrela-label {
+  color: var(--cor-primaria); 
+}
+
+
+.btn-check:checked ~ .estrela-label ~ .estrela-label {
+  color: var(--cor-primaria);
+}
+
+
+.btn-check:checked ~ .estrela-label {
+  color: var(--cor-primaria); 
+}
+
+.btn-check:checked ~ .estrela-label ~ .estrela-label {
+  color: var(--cor-primaria); 
 }

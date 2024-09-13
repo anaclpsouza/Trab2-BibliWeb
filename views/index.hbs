@@ -6,8 +6,10 @@
             {{#each usuario}}
             <div class="card mb-4">
                 <img src="{{this.avatar}}" class="card-img-top" alt="Foto do Perfil">
+                <hr>
                 <div class="card-body">
                     <h5 class="card-title">{{this.nome}}</h5>
+                    <br>
                     <a href="/usuario/alteraUsuario/{{this._id}}" class="btn btn-sm btn-dark">Editar perfil</a>
                 </div>
             </div>
@@ -39,9 +41,12 @@
                                     href="/livro/atualizarProgresso/{{this._id}}">Adicionar Atualizações</a>
                                 <p>
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal{{this._id}}"
-                                        class="mx-1"><i class="bi bi-trash2-fill" id="icone-bi"> deletar</i></a>
-                                    <a href="/livro/alteraLivro/{{this._id}}"><i class="bi bi-bookmark-heart-fill"
-                                            id="icone-bi"> alterar</i></a>
+                                        class="mx-1">
+                                        <i class="bi bi-trash2-fill" id="icone-bi"> deletar</i>
+                                    </a>
+                                    <a href="/livro/alteraLivro/{{this._id}}">
+                                        <i class="bi bi-bookmark-heart-fill" id="icone-bi"> alterar</i>
+                                    </a>
                                 </p>
                             </div>
                         </div>
@@ -58,12 +63,13 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Você deseja realmente excluir o livro {{this.titulo}}? Você perderá todas as informações e progresso.</p>
+                                <p>Você deseja realmente excluir o livro {{this.titulo}}? Você perderá todas as
+                                    informações e progresso.</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Não,
                                     cancele.</button>
-                                <a href="/nota/deleta/{{this._id}}"><button class="btn btn-danger">Sim,
+                                <a href="/livro/deleta/{{this._id}}"><button class="btn btn-dark">Sim,
                                         delete.</button></a>
                             </div>
                         </div>

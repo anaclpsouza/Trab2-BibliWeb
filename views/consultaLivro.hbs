@@ -28,7 +28,7 @@
 
     {{#if livro.progressoHistorico}}
     {{#each livro.progressoHistorico}}
-    <div class="card mb-2" style="border: 1px solid var(--cor-primaria);">
+    <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#atualizacoes">
         <div class="card-body">
             <p class="card-text" id="comentario">{{this.comentario}}</p>
             <p class="card-text"><small class="text-muted">{{this.data}}</small></p>
@@ -44,5 +44,23 @@
     <p class="text-center text-muted">Você ainda não adicionou atualizações de leitura</p>
     <p class="text-center"><a class="btn btn-sm btn-outline-dark"
             href="/livro/atualizarProgresso/{{livro._id}}">Adicionar Atualizações</a></p>
+    {{/if}}
+
+    <h2>Resenha</h2>
+    {{#if livro.resenha}}
+    {{#each livro.resenha}}
+    <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#resenha">
+        <div class="card-body">
+            <h4 class="card-text" id="titulo">{{this.titulo_resenha}}</h4>
+            
+            <p class="card-text" id="comentario">{{this.resenha}}</p>
+            <p class="card-text"><small class="text-muted">{{this.dataFim}}</small></p>
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+    <p class="text-center text-muted">Você ainda não adicionou uma resenha a este livro.</p>
+    <p class="text-center"><a class="btn btn-sm btn-outline-dark" href="/livro/criarResenha/{{livro._id}}">Adicionar
+            Resenha</a></p>
     {{/if}}
 </div>
