@@ -1,4 +1,4 @@
-<div class="container mt-4 pt-5">
+<div class="container mt-5 pt-5 ">
     <div class="card mb-3" style="border: 1px solid var(--cor-primaria);">
         <div class="row g-0">
             <div class="col-md-4">
@@ -8,10 +8,15 @@
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">{{livro.titulo}}</h5>
+
                     <p class="card-text"><strong>Autor:</strong> {{livro.autor}}</p>
                     <p class="card-text"><strong>Gênero:</strong> {{livro.genero}}</p>
                     <p class="card-text"><strong>Editora:</strong> {{livro.editora}}</p>
-                    <p class="card-text"><strong>Inicio da Leitura:</strong> {{livro.data}}</p>
+                    {{#if livro.progresso}}
+                    <p class="card-text"><strong>Inicio da Leitura:</strong> {{livro.dataInicio}}</p>
+                    {{else}}
+                    <p class="card-text"><b>Não lido</b></p>
+                    {{/if}}
                     <p class="card-text">{{livro.texto}}</p>
                     <p class="card-text">Progresso:</p>
                     <div class="progress mb-4">
@@ -41,18 +46,21 @@
     </div>
     {{/each}}
     {{else}}
+    {{#if condicao}}
+    <p class="text-center text-muted">Você não registrou atualizações para esse livro.</p>
+    {{else}}
     <p class="text-center text-muted">Você ainda não adicionou atualizações de leitura</p>
     <p class="text-center"><a class="btn btn-sm btn-outline-dark"
             href="/livro/atualizarProgresso/{{livro._id}}">Adicionar Atualizações</a></p>
     {{/if}}
-
+    {{/if}}
     <h2>Resenha</h2>
     {{#if livro.resenha}}
     {{#each livro.resenha}}
     <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#resenha">
         <div class="card-body">
             <h4 class="card-text" id="titulo">{{this.titulo_resenha}}</h4>
-            
+
             <p class="card-text" id="comentario">{{this.resenha}}</p>
             <p class="card-text"><small class="text-muted">{{this.dataFim}}</small></p>
         </div>

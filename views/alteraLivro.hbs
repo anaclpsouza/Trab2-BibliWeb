@@ -1,0 +1,128 @@
+<div class="container mt-5 pt-5"></div>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Alterar Cadastro do Livro</h5>
+                <form action="/livro/alteraLivro/{{livro._id}}" method="POST">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" value="{{livro.titulo}}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="genero" class="form-label">Gênero</label>
+                        <select class="form-select" id="genero" name="genero" required>
+                            {{#if ficcao}}
+                            <option value="Ficcao" selected>Ficção</option>
+                            {{else}}
+                            <option value="Ficcao">Ficção</option>
+                            {{/if}}
+
+                            {{#if fantasia}}
+                            <option value="Fantasia" selected>Fantasia</option>
+                            {{else}}
+                            <option value="Fantasia">Fantasia</option>
+                            {{/if}}
+
+                            {{#if romance}}
+                            <option value="Romance" selected>Romance</option>
+                            {{else}}
+                            <option value="Romance">Romance</option>
+                            {{/if}}
+
+                            {{#if distopia}}
+                            <option value="Distopia" selected>Distopia</option>
+                            {{else}}
+                            <option value="Distopia">Distopia</option>
+                            {{/if}}
+
+                            {{#if terror}}
+                            <option value="Terror" selected>Terror</option>
+                            {{else}}
+                            <option value="Terror">Terror</option>
+                            {{/if}}
+
+                            {{#if suspense}}
+                            <option value="Suspense" selected>Suspense</option>
+                            {{else}}
+                            <option value="Suspense">Suspense</option>
+                            {{/if}}
+
+                            {{#if outro}}
+                            <option value="Outros" selected>Outros</option>
+                            {{else}}
+                            <option value="Outros">Outros</option>
+                            {{/if}}
+                        </select>
+                    </div>
+
+                    {{!-- <div class="mb-3">
+                        <label for="data" class="form-label">Data de inicio da leitura</label>
+                        <input type="date" class="form-control" id="dataInicio" name="dataInicio"
+                            value="{{livro.dataInicio}}" required>
+                    </div> --}}
+                    <div class="mb-3">
+                        <label for="texto" class="form-label">Texto</label>
+                        <textarea class="form-control" id="texto" name="texto" rows="3"
+                            required>{{livro.texto}}</textarea>
+                    </div>
+
+
+                    <input type="number" class="form-control" id="progresso" name="progresso" min="0" max="100"
+                        value="{{livro.progresso}}" hidden>
+
+                    <div class="mb-3">
+                        <label for="autor" class="form-label">Autor</label>
+                        <input type="text" class="form-control" id="autor" name="autor" value="{{livro.autor}}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editora" class="form-label">Editora</label>
+                        <input type="text" class="form-control" id="editora" name="editora" value="{{livro.editora}}"
+                            required>
+                    </div>
+                    <br>
+                    <div class="mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="lido" value="lido" />
+                            <label class="tag-label" for="lido"><i class="bi bi-bookmark-check-fill">Lido</i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="nlido" value="nao-lido" />
+                            <label class="tag-label" for="nlido"><i class="bi bi-bookmark-dash-fill">Não
+                                    lido</i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="qroler" value="quero-ler" />
+                            <label class="tag-label" for="qroler"><i class="bi bi-bookmark-star-fill">Quero
+                                    ler</i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="lendo" value="lendo" />
+                            <label class="tag-label" for="lendo"><i class="bi bi-bookmark-fill"></i>Lendo</i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="relendo" value="relendo" />
+                            <label class="tag-label" for="relendo"><i
+                                    class="bi bi-bookmark-star-fill"></i>Relendo</i></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="tag-check" type="radio" name="tag" id="abandonei" value="abandonei" />
+                            <label class="tag-label" for="abandonei"><i
+                                    class="bi bi-bookmark-x-fill"></i>Abandonei</i></label>
+                        </div>
+                    </div>
+                    <div class="mb- 3">
+                        <p class="text-muted">Ao alterar o cadastro de um livro, seu progresso e suas atualizações de
+                            leitura
+                            são mantidas.</p>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">Salvar Livro</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

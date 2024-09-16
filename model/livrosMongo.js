@@ -18,49 +18,16 @@ class LivroMongo {
         cliente = undefined;
     }
 
-    async cadLivro(titulo, data, genero, texto, autor, editora, progresso = 0) {
+    async cadLivro(titulo, genero, texto, autor, editora, tag, progresso = 0) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        await colecao.insertOne({ titulo, data, genero, texto, autor, editora, progresso });
+        await colecao.insertOne({ titulo, genero, texto, autor, editora, tag, progresso });
     }
 
-    async atualizarProgresso(id, percentual, comentario) {
+    async alteraLivro(id, titulo, genero, texto, autor, editora, tag) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
-
-        if (!livro) {
-            throw new Error('Livro não encontrado');
-        }
-
-        if (percentual < livro.progresso) {
-            throw new Error('O percentual não pode ser menor do que o progresso atual');
-        }
-
-        if (percentual > 100) {
-            throw new Error('O progresso não pode exceder 100%');
-        }
-
-        try {
-            const resultado = await colecao.updateOne(
-                { _id: new mongodb.ObjectId(id) },
-                {
-                    $set: { progresso: percentual }, 
-                    $push: {
-                        progressoHistorico: { 
-                            percentual,
-                            comentario,
-                            data: new Date()
-                        }
-                    }
-                }
-            );
-
-            return resultado;
-        } catch (erro) {
-            console.error('Erro ao adicionar progresso:', erro);
-            throw erro;
-        }
+        await colecao.updateOne({ _id: new mongodb.ObjectId(id) }, { $set: { titulo, genero, texto, autor, editora, tag } });
     }
 
     async consulta(id) {
@@ -90,24 +57,104 @@ class LivroMongo {
         return livros;
     }
 
-    async criarResenha(id, titulo_resenha, resenha, estrela, ) {
+    async atualizarProgresso(id, percentual, comentario) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        const livro = await colecao.updateOne(
+        const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
+
+        if (!livro) {
+            throw new Error('Livro não encontrado');
+        }
+
+        if (percentual < livro.progresso) {
+            throw new Error('O percentual não pode ser menor do que o progresso atual');
+        }
+
+        if (percentual > 100) {
+            throw new Error('O progresso não pode exceder 100%');
+        }
+
+        const atualizacao = { percentual, comentario, data: new Date() };
+
+        if (!livro.dataInicio) {
+            atualizacao.dataInicio = atualizacao.data;
+        }
+
+        if (percentual === 100) {
+            try {
+                const resultado = await colecao.updateOne(
+                    { _id: new mongodb.ObjectId(id) },
+                    {
+                        $set: {
+                            progresso: percentual,
+                            dataFim: atualizacao.data
+                        },
+                        $push: {
+                            progressoHistorico: atualizacao
+                        }
+                    }
+                );
+                return resultado;
+            } catch (erro) {
+                console.error('Erro ao adicionar progresso:', erro);
+                throw erro;
+            }
+        } else {
+            try {
+                const resultado = await colecao.updateOne(
+                    { _id: new mongodb.ObjectId(id) },
+                    {
+                        $set: { progresso: percentual },
+                        $push: { progressoHistorico: atualizacao }
+                    }
+                );
+                return resultado;
+            } catch (erro) {
+                console.error('Erro ao adicionar progresso:', erro);
+                throw erro;
+            }
+        }
+    }
+
+
+    async criarResenha(id, titulo_resenha, resenha, estrela, dataFim) {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+
+        const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
+
+        if (!livro) {
+            throw new Error('Livro não encontrado');
+        }
+
+        const resultado = await colecao.updateOne(
             { _id: new mongodb.ObjectId(id) },
             {
-                $set: { progresso: 100 }, 
+                $set: {
+                    progresso: 100
+                },
                 $push: {
-                    resenha: { 
+                    resenha: {
                         titulo_resenha,
                         resenha,
                         estrela,
-                        dataFim: new Date()
+                        dataFim
                     }
                 }
-            }
-        );
+
+            });
+
+        // Atualizar a data de fim no livro se a dataFim for fornecida
+        // if (dataFim) {
+        //     updateFields.$set = { dataFim };
+        // }
+
+        // await colecao.updateOne(
+        //     { _id: new mongodb.ObjectId(id) },
+        //     updateFields
+        // );
     }
+
 }
 
 module.exports = new LivroMongo();

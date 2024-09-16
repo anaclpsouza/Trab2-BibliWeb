@@ -4,26 +4,22 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Cadastrar Novo Livro</h5>
-                    <form action="/livro/cadLivro" method="POST" enctype="multipart/form-data">
+                    <form action="/livro/cadLivro" method="POST">
                         <div class="mb-3">
                             <label for="titulo" class="form-label">Título</label>
                             <input type="text" class="form-control" id="titulo" name="titulo" required>
                         </div>
                         <div class="mb-3">
-                            <label for="data" class="form-label">Data de inicio da leitura</label>
-                            <input type="date" class="form-control" id="data" name="data" required>
-                        </div>
-                        <div class="mb-3">
                             <label for="genero" class="form-label">Gênero</label>
                             <select class="form-select" id="genero" name="genero" required>
                                 <option value="" disabled selected>Escolha um gênero</option>
-                                <option value="ficcao">Ficção</option>
-                                <option value="fantasia">Fantasia</option>
-                                <option value="romance">Romance</option>
-                                <option value="suspense">Suspense</option>
-                                <option value="distopia">Distopia</option>
-                                <option value="terror">Terror</option>
-                                <option value="outro">Outro</option>
+                                <option value="Ficcao">Ficção</option>
+                                <option value="Fantasia">Fantasia</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Suspense">Suspense</option>
+                                <option value="Distopia">Distopia</option>
+                                <option value="Terror">Terror</option>
+                                <option value="Outro">Outro</option>
                             </select>
                         </div>
 
@@ -44,9 +40,39 @@
                             <label for="editora" class="form-label">Editora</label>
                             <input type="text" class="form-control" id="editora" name="editora" required>
                         </div>
+                        <br>
+                        {{!-- formulario de tags --}}
                         <div class="mb-3">
-                            <label for="imagem" class="form-label">Imagem</label>
-                            <input type="text" class="form-control" id="imagem" name="imagem" value="">
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="lido" value="lido" />
+                                <label class="tag-label" for="lido"><i
+                                        class="bi bi-bookmark-check-fill">Lido</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="nlido" value="nao-lido" />
+                                <label class="tag-label" for="nlido"><i class="bi bi-bookmark-dash-fill">Não
+                                        lido</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="qroler" value="quero-ler" />
+                                <label class="tag-label" for="qroler"><i class="bi bi-bookmark-star-fill">Quero
+                                        ler</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="lendo" value="lendo" />
+                                <label class="tag-label" for="lendo"><i
+                                        class="bi bi-bookmark-fill"></i>Lendo</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="relendo" value="relendo" />
+                                <label class="tag-label" for="relendo"><i
+                                        class="bi bi-bookmark-star-fill"></i>Relendo</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="abandonei" value="abandonei" />
+                                <label class="tag-label" for="abandonei"><i
+                                        class="bi bi-bookmark-x-fill"></i>Abandonei</i></label>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-dark">Salvar Livro</button>
                     </form>

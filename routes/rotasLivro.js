@@ -6,6 +6,10 @@ router.get('/cadLivro', controllerLivro.cadLivro_get);
 
 router.post('/cadLivro', controllerLivro.cadLivro);
 
+router.get('/alteraLivro/:_id', controllerLivro.alteraLivro_get);
+
+router.post('/alteraLivro/:_id', controllerLivro.alteraLivro);
+
 router.get('/atualizarProgresso/:_id', controllerLivro.get_atualizarProgresso);
 
 router.post('/atualizarProgresso/:_id', controllerLivro.post_atualizarProgresso);

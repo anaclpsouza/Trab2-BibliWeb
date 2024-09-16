@@ -14,6 +14,7 @@ body {
   background-color: var(--cor-secundaria);
   /* font-family: 'Red Hat Mono', sans-serif; */
   color: var(--cor-quaternaria);
+
 }
 
 h1 {
@@ -22,6 +23,14 @@ h1 {
 
 a {
   text-decoration: none;
+}
+
+h5 {
+  font-family: 'Martian Mono', sans-serif;
+}
+
+i {
+  font-style: normal;
 }
 
 .form-control:focus {
@@ -37,8 +46,9 @@ a {
 .navbar {
   position: fixed;
   border-bottom: 1px solid var(--cor-primaria);
-  background-color: #FFFFFF;
-  font-family: 'Martian Mono', sans-serif;
+  background-color: var(--cor-secundaria);
+  font-size: large;
+
 }
 
 .navbar-nav .nav-link {
@@ -46,9 +56,15 @@ a {
   transition: color 0.3s ease;
 }
 
-.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:hover,  
 .navbar-nav .nav-link.active {
   color: var(--cor-primaria);
+}
+
+#logo {
+  padding-right: 5px;
+  
+  font-size: larger;
 }
 
 .card {
@@ -161,11 +177,9 @@ a {
   color: #d3d3d3; 
 }
 
-
 .btn-check {
   display: none;
 }
-
 
 .btn-check:checked ~ .estrela-label {
   color: var(--cor-primaria); 
@@ -184,3 +198,20 @@ a {
 .btn-check:checked ~ .estrela-label ~ .estrela-label {
   color: var(--cor-primaria); 
 }
+
+.tag-label {
+  font-size: 20px;
+  cursor: pointer;
+  color: #000000; 
+}
+
+.tag-check{
+  opacity: 0;
+  cursor: pointer;
+  display: none;
+} 
+
+.tag-check:checked ~ .tag-label{
+  color:#1d8739;
+}
+

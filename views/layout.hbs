@@ -11,31 +11,69 @@
 </head>
 
 <body>
-
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-    <div class="container">
+    <div class="container-fluid">
       <img src="/images/logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-left">
-      <span>BibliWeb</span>
+      <span  id="logo">BibliWeb</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse mb-2 mb-lg-0" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="/"> <i class="bi bi-house-heart">Página
+            <a href="" class="btn-link nav-link" data-bs-toggle="offcanvas" data-bs-target="#demo">
+              <i class="bi bi-person-circle"> Perfil</i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/"> <i class="bi bi-house-heart"> Página
                 Principal</i></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/livro/cadLivro"><i class="bi bi-bookmark-heart">Cadastrar Livro</i></a>
+            <a class="nav-link" href="/livro/cadLivro"><i class="bi bi-bookmark-heart"> Cadastrar Livro</i></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-pie-chart">Dados de leitura</i></a>
+            <a class="nav-link" href="#"><i class="bi bi-pie-chart"> Dados de leitura</i></a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
+
+  <div class="offcanvas offcanvas-start" id="demo">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="Enable both scrolling & backdrop">
+        Meu perfil
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      {{#if usuario.length}}
+      {{#each usuario}}
+      <div class="card mb-4">
+        <img src="{{this.avatar}}" class="card-img-top" alt="Foto do Perfil">
+        <hr>
+        <div class="card-body">
+          <h5 class="card-title">{{this.nome}}</h5>
+          <br>
+          <a href="/usuario/alteraUsuario/{{this._id}}" class="btn btn-sm btn-dark">Editar perfil</a>
+        </div>
+      </div>
+      {{/each}}
+      {{else}}
+      <div class="card mb-4">
+        <img src="/images/avatar-padrao.png" class="card-img-top" alt="Foto do Perfil">
+        <div class="card-body">
+          <a href="/usuario/cadUsuario" class="btn btn-sm btn-dark">Criar perfil</a>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+
 
   <div class="container mt-4">
     {{{body}}}
