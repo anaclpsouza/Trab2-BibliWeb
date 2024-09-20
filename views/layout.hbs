@@ -14,7 +14,7 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container-fluid">
       <img src="/images/logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-left">
-      <span  id="logo">BibliWeb</span>
+      <span id="logo">BibliWeb</span>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -27,20 +27,52 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/"> <i class="bi bi-house-heart"> Página
-                Principal</i></a>
+            <a class="nav-link" href="/"> <i class="bi bi-house-heart"> Página Principal</i></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/livro/cadLivro"><i class="bi bi-bookmark-heart"> Cadastrar Livro</i></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-pie-chart"> Dados de leitura</i></a>
+            <a class="nav-link" href="/ajuda"><i class="bi bi-question-circle"> Ajuda</i></a>
           </li>
         </ul>
+
+        <div class="d-flex ms-auto">
+          <!-- Formulário de filtro -->
+          <form method="GET" action="/filtrar" class="d-flex">
+            <select id="filtroIndex" name="genero" class="form-select" style="width: 150px;">
+              <option value="Todos" {{#if Todos}}selected{{/if}}>Todos</option>
+              <option value="Romance" {{#if Romance}}selected{{/if}}>Romance</option>
+              <option value="Ficcao" {{#if Ficcao}}selected{{/if}}>Ficção</option>
+              <option value="Fantasia" {{#if Fantasia}}selected{{/if}}>Fantasia</option>
+              <option value="Distopia" {{#if Distopia}}selected{{/if}}>Distopia</option>
+              <option value="Terror" {{#if Terror}}selected{{/if}}>Terror</option>
+              <option value="Suspense" {{#if Suspense}}selected{{/if}}>Suspense</option>
+              <option value="Outros" {{#if Outros}}selected{{/if}}>Outros</option>
+            </select>
+            <button type="submit" class="btn btn-dark ms-2"><i class="bi bi-filter"></i></button>
+          </form>
+
+          <!-- Formulário de busca -->
+          <form action="/" method="post" class="d-flex ms-3">
+            <div class="input-group">
+              {{#if condicao_busca}}
+              <input type="search" class="form-control" name="busca" placeholder="{{busca}}">
+              <button class="btn btn-dark" name="botaoCancelar" type="submit">
+                <i class="bi bi-x-circle-fill"></i>
+              </button>
+              {{else}}
+              <input type="search" class="form-control" name="busca" placeholder="Pesquisa" required>
+              <button class="btn btn-outline-dark" name="botaoBusca" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+              {{/if}}
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </nav>
-
 
   <div class="offcanvas offcanvas-start" id="demo">
     <div class="offcanvas-header">

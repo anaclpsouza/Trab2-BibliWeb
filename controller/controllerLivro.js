@@ -16,8 +16,6 @@ exports.cadLivro = async function (req, res) {
     const editora = req.body.editora;
     const tag = req.body.tag;
 
-    console.log("titulo do req" + titulo)
-    console.log(req.body)
     try {
         await Livro.cadLivro(titulo, genero, texto, autor, editora, tag);
         res.redirect('/');
@@ -28,7 +26,7 @@ exports.cadLivro = async function (req, res) {
 };
 
 exports.alteraLivro_get = async function (req, res) {
-    console.log("chegou no get")
+
     const id = req.params._id
     const livro = await Livro.consulta(id);
 
@@ -79,14 +77,14 @@ exports.alteraLivro_get = async function (req, res) {
 };
 
 exports.alteraLivro = async function (req, res) {
-    const titulo = req.body.titulo; 
+    const titulo = req.body.titulo;
     const genero = req.body.genero;
     const texto = req.body.texto;
     const autor = req.body.autor;
     const editora = req.body.editora;
     const tag = req.body.tag;
 
-    
+
     const id = req.params._id
 
     try {
@@ -102,25 +100,41 @@ exports.alteraLivro = async function (req, res) {
 exports.consulta = async function (req, res) {
     var id = req.params._id
     var livro = await Livro.consulta(id)
-    var condicao = false
-    if (livro.progresso == 100){
-        condicao = true;
-    }
-    try {
-        var dataInicio = new Date(livro.dataInicio);
-        var dataFormatada = dataInicio.toLocaleDateString("pt-BR")
-        livro.dataInicio = dataFormatada
-        dataInicio = true
-    } catch {
-        dataInicio = false
+
+    let dataInicioV = false;
+    let dataFimV = false;
+    let dataInicioFormatada, dataFimFormatada;
+
+    if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
+        const dataInicio = new Date(livro.progressoHistorico[0].dataInicio);
+        dataInicioFormatada = dataInicio.toLocaleDateString("pt-BR");
+        livro.progressoHistorico[0].dataInicio = dataInicioFormatada;
+        dataInicioV = true;
     }
 
-    contexto = {
+    if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
+        const data = new Date(livro.progressoHistorico[0].data);
+        var dataFormatada = data.toLocaleDateString("pt-BR");
+        livro.progressoHistorico[0].data = dataFormatada;
+    }
+
+    if (Array.isArray(livro.resenha) && livro.resenha.length > 0) {
+        const dataFim = new Date(livro.resenha[0].dataFim);
+        dataFimFormatada = dataFim.toLocaleDateString("pt-BR");
+        livro.resenha[0].dataFim = dataFimFormatada;
+        dataFimV = true;
+    }
+
+    const contexto = {
         titulo_pagina: "Detalhes",
         livro: livro,
-        dataInicio: dataInicio,
-        condicao: condicao
+        dataInicioV: dataInicioV,
+        condicao: livro.progresso === 100,
+        dt: dataInicioFormatada,
+        dtF: dataFimFormatada,
+        dataFimV: dataFimV
     };
+
     res.render('consultaLivro', contexto)
 }
 
@@ -130,12 +144,12 @@ exports.get_atualizarProgresso = async function (req, res) {
     var livro = await Livro.consulta(id);
 
     var condicao = false
-    if (livro.resenha){
+    if (livro.resenha) {
         condicao = true;
     }
 
     var condicaoLivro = false
-    if (livro.progresso == 100){
+    if (livro.progresso == 100) {
         condicaoLivro = true;
     }
 
@@ -150,15 +164,13 @@ exports.get_atualizarProgresso = async function (req, res) {
 
 
 exports.post_atualizarProgresso = async function (req, res) {
-    const { percentual, comentario } = req.body;
+    const { percentual, comentario, dataInicio } = req.body;
     const id = req.params._id;
-    
 
-    var livro = await Livro.consulta(id)
+    const dataFormatada = new Date(dataInicio + "T00:00:00");
 
-    await Livro.atualizarProgresso(id, percentual, comentario)
-
-    res.redirect('/')
+    await Livro.atualizarProgresso(id, percentual, comentario, dataFormatada);
+    res.redirect('/');
 }
 
 
@@ -184,15 +196,13 @@ exports.get_criarResenha = async function (req, res) {
 
 
 exports.post_criarResenha = async function (req, res) {
-    const resenha = req.body.resenha;
-    const estrela = req.body.estrela;
-    const titulo_resenha = req.body.titulo_resenha
-    const dataFim = req.body.dataFim
+    const { resenha, estrela, titulo_resenha, dataFim } = req.body;
     const id = req.params._id;
 
-    await Livro.criarResenha(id, titulo_resenha, resenha, estrela, dataFim)
+    const dataFormatada = new Date(dataFim + "T00:00:00");
 
-    res.redirect('/')
+    await Livro.criarResenha(id, titulo_resenha, resenha, estrela, dataFormatada);
+    res.redirect('/');
 }
 
 

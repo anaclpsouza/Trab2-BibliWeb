@@ -12,10 +12,14 @@
                     <p class="card-text"><strong>Autor:</strong> {{livro.autor}}</p>
                     <p class="card-text"><strong>Gênero:</strong> {{livro.genero}}</p>
                     <p class="card-text"><strong>Editora:</strong> {{livro.editora}}</p>
-                    {{#if livro.progresso}}
-                    <p class="card-text"><strong>Inicio da Leitura:</strong> {{livro.dataInicio}}</p>
+                    {{#if dataInicioV}}
+                    <p class="card-text"><strong>Inicio da Leitura:</strong> {{dt}}</p>
                     {{else}}
                     <p class="card-text"><b>Não lido</b></p>
+                    {{/if}}
+                    {{#if dataFimV}}
+                    <p class="card-text"><strong>Fim da Leitura:</strong> {{dtF}}</p>
+                    {{else}}
                     {{/if}}
                     <p class="card-text">{{livro.texto}}</p>
                     <p class="card-text">Progresso:</p>
@@ -35,13 +39,14 @@
     {{#each livro.progressoHistorico}}
     <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#atualizacoes">
         <div class="card-body">
-            <p class="card-text" id="comentario">{{this.comentario}}</p>
-            <p class="card-text"><small class="text-muted">{{this.data}}</small></p>
             <div class="progress mb-2">
                 <div class="progress-bar bg-dark" role="progressbar" style="width: {{this.percentual}}%;">
                     {{this.percentual}}%
                 </div>
             </div>
+            <br>
+            <p class="card-text" id="comentario">{{this.comentario}}</p>
+            <p class="card-text"><small class="text-muted">Publicado em: {{data}}</small></p>
         </div>
     </div>
     {{/each}}
@@ -62,7 +67,7 @@
             <h4 class="card-text" id="titulo">{{this.titulo_resenha}}</h4>
 
             <p class="card-text" id="comentario">{{this.resenha}}</p>
-            <p class="card-text"><small class="text-muted">{{this.dataFim}}</small></p>
+            <p class="card-text"><small class="text-muted">Término da leitura: {{this.dataFim}}</small></p>
         </div>
     </div>
     {{/each}}

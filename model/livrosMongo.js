@@ -50,14 +50,7 @@ class LivroMongo {
         }
     }
 
-    async lista() {
-        await conexao_bd();
-        const colecao = bd().collection("livros");
-        const livros = await colecao.find({}).toArray();
-        return livros;
-    }
-
-    async atualizarProgresso(id, percentual, comentario) {
+    async atualizarProgresso(id, percentual, comentario, dtI) {
         await conexao_bd();
         const colecao = bd().collection("livros");
         const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
@@ -77,7 +70,7 @@ class LivroMongo {
         const atualizacao = { percentual, comentario, data: new Date() };
 
         if (!livro.dataInicio) {
-            atualizacao.dataInicio = atualizacao.data;
+            atualizacao.dataInicio = dtI;
         }
 
         if (percentual === 100) {
@@ -154,6 +147,22 @@ class LivroMongo {
         //     updateFields
         // );
     }
+
+
+    async lista() {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const livros = await colecao.find({}).toArray();
+        return livros;
+    }
+
+    async listaGenero(genero) {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const livros = await colecao.find({ genero: genero }).toArray();
+        return livros;
+    }
+
 
 }
 
