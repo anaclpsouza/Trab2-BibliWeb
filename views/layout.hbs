@@ -8,6 +8,7 @@
   <link rel='stylesheet' href='/stylesheets/bootstrap/bootstrap.min.css' />
   <link rel="stylesheet" href="/stylesheets/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -74,36 +75,6 @@
     </div>
   </nav>
 
-  <div class="offcanvas offcanvas-start" id="demo">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="Enable both scrolling & backdrop">
-        Meu perfil
-      </h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      {{#if usuario.length}}
-      {{#each usuario}}
-      <div class="card mb-4">
-        <img src="{{this.avatar}}" class="card-img-top" alt="Foto do Perfil">
-        <hr>
-        <div class="card-body">
-          <h5 class="card-title">{{this.nome}}</h5>
-          <br>
-          <a href="/usuario/alteraUsuario/{{this._id}}" class="btn btn-sm btn-dark">Editar perfil</a>
-        </div>
-      </div>
-      {{/each}}
-      {{else}}
-      <div class="card mb-4">
-        <img src="/images/avatar-padrao.png" class="card-img-top" alt="Foto do Perfil">
-        <div class="card-body">
-          <a href="/usuario/cadUsuario" class="btn btn-sm btn-dark">Criar perfil</a>
-        </div>
-      </div>
-      {{/if}}
-    </div>
-  </div>
 
 
 
@@ -111,6 +82,13 @@
     {{{body}}}
   </div>
 
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; Ana Clara Souza, IF Sudeste MG, 2024</p>
+      <p>Email: <a href="mailto:anaclarap03@gmail.com">anaclarap03@gmail.com</a></p>
+      <a href="#top" class="back-to-top">Voltar ao topo</a>
+    </div>
+  </footer>
   <script src="/javascripts/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -21,7 +21,8 @@ class LivroMongo {
     async cadLivro(titulo, genero, texto, autor, editora, tag, progresso = 0) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        await colecao.insertOne({ titulo, genero, texto, autor, editora, tag, progresso });
+        var dataCriacao = new Date();
+        await colecao.insertOne({ titulo, genero, texto, autor, editora, tag, progresso, dataCriacao });
     }
 
     async alteraLivro(id, titulo, genero, texto, autor, editora, tag) {
@@ -31,26 +32,26 @@ class LivroMongo {
     }
 
     async consulta(id) {
-        await conexao_bd()
-        const colecao = bd().collection("livros")
-        const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) })
-        return livro
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
+        return livro;
     }
 
     async deleta(id) {
-        await conexao_bd()
-        const colecao = bd().collection("livros")
+        await conexao_bd();
+        const colecao = bd().collection("livros");
         const doc = await colecao.findOne({
             _id: new mongodb.ObjectId(id)
-        })
+        });
         if (!doc) {
-            throw new Error(`Este livro não exite`)
+            throw new Error(`Este livro não existe`);
         } else {
-            await colecao.findOneAndDelete({ _id: new mongodb.ObjectId(id) })
+            await colecao.findOneAndDelete({ _id: new mongodb.ObjectId(id) });
         }
     }
 
-    async atualizarProgresso(id, percentual, comentario, dtI) {
+    async atualizarProgresso(id, percentual, comentario, dtI = null) {
         await conexao_bd();
         const colecao = bd().collection("livros");
         const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
@@ -73,86 +74,68 @@ class LivroMongo {
             atualizacao.dataInicio = dtI;
         }
 
-        if (percentual === 100) {
-            try {
-                const resultado = await colecao.updateOne(
-                    { _id: new mongodb.ObjectId(id) },
-                    {
-                        $set: {
-                            progresso: percentual,
-                            dataFim: atualizacao.data
-                        },
-                        $push: {
-                            progressoHistorico: atualizacao
-                        }
-                    }
-                );
-                return resultado;
-            } catch (erro) {
-                console.error('Erro ao adicionar progresso:', erro);
-                throw erro;
+        try {
+            const updateFields = {
+                $set: { progresso: percentual },
+                $push: { progressoHistorico: atualizacao }
+            };
+
+            if (percentual === 100) {
+                updateFields.$set.dataFim = atualizacao.data;
             }
-        } else {
-            try {
-                const resultado = await colecao.updateOne(
-                    { _id: new mongodb.ObjectId(id) },
-                    {
-                        $set: { progresso: percentual },
-                        $push: { progressoHistorico: atualizacao }
-                    }
-                );
-                return resultado;
-            } catch (erro) {
-                console.error('Erro ao adicionar progresso:', erro);
-                throw erro;
-            }
+
+            const resultado = await colecao.updateOne(
+                { _id: new mongodb.ObjectId(id) },
+                updateFields
+            );
+            return resultado;
+        } catch (erro) {
+            console.error('Erro ao adicionar progresso:', erro);
+            throw erro;
         }
     }
 
-
-    async criarResenha(id, titulo_resenha, resenha, estrela, dataFim) {
+    async criarResenha(id, titulo_resenha, resenha, estrela, dataFim = null, tag, progresso) {
         await conexao_bd();
         const colecao = bd().collection("livros");
 
         const livro = await colecao.findOne({ _id: new mongodb.ObjectId(id) });
+        if (progresso) {
+            await colecao.updateOne({ _id: new mongodb.ObjectId(id) }, { $set: { progresso: 100 } });
+        }
 
         if (!livro) {
             throw new Error('Livro não encontrado');
         }
 
-        const resultado = await colecao.updateOne(
-            { _id: new mongodb.ObjectId(id) },
-            {
-                $set: {
-                    progresso: 100
-                },
-                $push: {
-                    resenha: {
-                        titulo_resenha,
-                        resenha,
-                        estrela,
-                        dataFim
-                    }
-                }
+        const resenhaObj = {
+            titulo_resenha,
+            resenha,
+            estrela,
+            dataFim: dataFim || null,
+            tag: tag
+        };
 
-            });
+        try {
+            const updateFields = {
+                $push: { resenha: resenhaObj }
+            };
 
-        // Atualizar a data de fim no livro se a dataFim for fornecida
-        // if (dataFim) {
-        //     updateFields.$set = { dataFim };
-        // }
-
-        // await colecao.updateOne(
-        //     { _id: new mongodb.ObjectId(id) },
-        //     updateFields
-        // );
+            const resultado = await colecao.updateOne(
+                { _id: new mongodb.ObjectId(id) },
+                updateFields
+            );
+            return resultado;
+        } catch (erro) {
+            console.error('Erro ao adicionar resenha:', erro);
+            throw erro;
+        }
     }
-
 
     async lista() {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        const livros = await colecao.find({}).toArray();
+        const livros = await colecao.find({}).sort({ dataCriacao: -1 }).toArray();
         return livros;
     }
 
@@ -163,6 +146,87 @@ class LivroMongo {
         return livros;
     }
 
+    async qtdGenero(genero) {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const qtd = await colecao.count({ genero: genero });
+        return qtd;
+    }
+
+    async qntTag(tag) {
+        await conexao_bd()
+        const colecao = bd().collection("livros")
+        const qtd = await colecao.count({ tag: tag })
+        return qtd
+    }
+
+    async statusLivros() {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+
+        // Livros com dataFim e tag "lido"
+        const lidos = await colecao.countDocuments({
+            resenha: {
+                $elemMatch: {
+                    dataFim: { $exists: true, $ne: null },
+                    tag: 'lido'
+                }
+            }
+        }); 
+
+        // Livros com dataFim e tag "abandonado"
+        const abandonado = await colecao.countDocuments({
+            resenha: {
+                $elemMatch: {
+                    tag: 'abandonado'
+                }
+            }
+        });
+
+
+        const lendo = await colecao.countDocuments({
+            progressoHistorico: {
+                $elemMatch: {
+                    dataInicio: { $exists: true, $ne: null }
+                }
+            },
+            resenha: { $exists: false }
+        });
+
+        // Livros sem qualquer progresso (não lidos)
+        const naoLidos = await colecao.countDocuments({
+            progressoHistorico: {
+                $not: {
+                    $elemMatch: {
+                        dataInicio: { $exists: true, $ne: null }
+                    }
+                }
+            },
+            resenha: {
+                $not: {
+                    $elemMatch: {
+                        dataFim: { $exists: true, $ne: null }
+                    }
+                }
+            }
+        });
+
+
+        return {
+            lidos,
+            lendo,
+            naoLidos,
+            abandonado
+        };
+    }
+
+    async listaBusca(busca) {
+        await conexao_bd()
+        const colecao = bd().collection("livros")
+        colecao.createIndex({ titulo: "text" })
+        var anotacoes = await colecao.find({ $text: { $search: busca } }).sort({ titulo: 1 }).toArray()
+        return anotacoes
+    }
 
 }
 

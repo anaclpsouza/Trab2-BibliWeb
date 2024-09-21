@@ -103,7 +103,9 @@ exports.consulta = async function (req, res) {
 
     let dataInicioV = false;
     let dataFimV = false;
+
     let dataInicioFormatada, dataFimFormatada;
+
 
     if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
         const dataInicio = new Date(livro.progressoHistorico[0].dataInicio);
@@ -113,9 +115,11 @@ exports.consulta = async function (req, res) {
     }
 
     if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
-        const data = new Date(livro.progressoHistorico[0].data);
-        var dataFormatada = data.toLocaleDateString("pt-BR");
-        livro.progressoHistorico[0].data = dataFormatada;
+        for (let i = 0; i < livro.progressoHistorico.length; i++) {
+            const data = new Date(livro.progressoHistorico[i].data);
+            var dataFormatada = data.toLocaleDateString("pt-BR");
+            livro.progressoHistorico[i].data = dataFormatada;
+        }
     }
 
     if (Array.isArray(livro.resenha) && livro.resenha.length > 0) {
@@ -139,9 +143,16 @@ exports.consulta = async function (req, res) {
 }
 
 exports.get_atualizarProgresso = async function (req, res) {
-    console.log("chegou no altera get")
     var id = req.params._id
     var livro = await Livro.consulta(id);
+    let condicaoData
+
+    if (!livro.progressoHistorico || !livro.progressoHistorico[0]?.dataInicio) {
+        const dataInicio = req.body.dataInicio ? new Date(req.body.dataInicio) : null;
+        if (!dataInicio) {
+            condicaoData = true
+        }
+    }
 
     var condicao = false
     if (livro.resenha) {
@@ -149,7 +160,7 @@ exports.get_atualizarProgresso = async function (req, res) {
     }
 
     var condicaoLivro = false
-    if (livro.progresso == 100) {
+    if (livro.progresso === 100) {
         condicaoLivro = true;
     }
 
@@ -157,21 +168,47 @@ exports.get_atualizarProgresso = async function (req, res) {
         titulo_pagina: "Atualizar Progresso",
         livros: livro,
         condicao: condicao,
-        condicaoLivro: condicaoLivro
+        condicaoLivro: condicaoLivro,
+        condicaoData: condicaoData
     };
     res.render('atualizarProgresso', contexto);
 };
 
 
 exports.post_atualizarProgresso = async function (req, res) {
-    const { percentual, comentario, dataInicio } = req.body;
-    const id = req.params._id;
+    const livroId = req.params._id;
+    const novoProgresso = parseInt(req.body.percentual);
+    const comentario = req.body.comentario;
+    const dataAtualizacao = new Date(); // Data da atualização
+    const dataInicio = req.body.dataInicio ? new Date(req.body.dataInicio) : null;
 
-    const dataFormatada = new Date(dataInicio + "T00:00:00");
+    try {
+        const livro = await Livro.consulta(livroId);
 
-    await Livro.atualizarProgresso(id, percentual, comentario, dataFormatada);
-    res.redirect('/');
-}
+       
+        if (novoProgresso < livro.progresso) {
+            return res.render('error', { mensagem: "Progresso não pode ser menor que o já registrado." });
+        }
+
+       
+        if (novoProgresso === 100) {
+            await Livro.atualizarProgresso(livroId, novoProgresso, comentario, dataAtualizacao);
+            
+        }
+
+        
+        if (!livro.dataInicio && dataInicio) {
+            await Livro.atualizarProgresso(livroId, novoProgresso, comentario, dataAtualizacao, dataInicio);
+        } else {
+            await Livro.atualizarProgresso(livroId, novoProgresso, comentario, null);
+        }
+
+        res.redirect(`/`);
+    } catch (erro) {
+        console.log(erro);
+        res.render('error', { mensagem: "Erro ao atualizar o progresso." });
+    }
+};
 
 
 exports.deleta = async function (req, res) {
@@ -184,10 +221,12 @@ exports.deleta = async function (req, res) {
 exports.get_criarResenha = async function (req, res) {
     var id = req.params._id
     var livro = await Livro.consulta(id)
+  
 
     const contexto = {
         titulo_pagina: "Atualizar Progresso",
-        livros: livro
+        livros: livro,
+      
 
     };
 
@@ -196,13 +235,38 @@ exports.get_criarResenha = async function (req, res) {
 
 
 exports.post_criarResenha = async function (req, res) {
-    const { resenha, estrela, titulo_resenha, dataFim } = req.body;
-    const id = req.params._id;
+    const livroId = req.params._id;
+    const tituloResenha = req.body.titulo_resenha;
+    const resenhaTexto = req.body.resenha;
+    const dataFim = new Date(req.body.dataFim + "T00:00:00"); 
+    const tag = req.body.tag; 
+    const estrelas = parseInt(req.body.estrela);
 
-    const dataFormatada = new Date(dataFim + "T00:00:00");
+    if (req.body.dataInicio) {
+        const dataInicio = new Date(req.body.dataInicio);
+        await Livro.atualizarProgresso(livroId, null, null, dataInicio)
+    }
+ 
 
-    await Livro.criarResenha(id, titulo_resenha, resenha, estrela, dataFormatada);
-    res.redirect('/');
-}
+    try {
+        
+        if (tag === 'lido') {
+            await Livro.criarResenha(livroId, tituloResenha, resenhaTexto, estrelas, dataFim, 'lido');
+            await Livro.atualizarProgresso(livroId, "100", null, null)
+            return res.redirect('/');
+        }
+
+       
+        if (tag === 'abandonado') {
+            await Livro.criarResenha(livroId, tituloResenha, resenhaTexto, estrelas, dataFim, 'abandonado');
+            return res.redirect('/');
+        }
+
+       
+    } catch (erro) {
+        console.log(erro);
+        res.render('error', { mensagem: "Erro ao criar a resenha." });
+    }
+};
 
 

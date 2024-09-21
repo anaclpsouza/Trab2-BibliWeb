@@ -1,5 +1,11 @@
-<div class="container mt-5 pt-5" >
+<div class="container mt-5 pt-5">
+    {{#if usuario.length}}
+    {{#each usuario}}
+    <h1><img src="{{this.avatar}}" class="card-img-top" style="width: 60px;" alt="Foto do Perfil">Meus livros</h1>
+    {{/each}}
+    {{else}}
     <h1>Meus livros</h1>
+    {{/if}}
     <div class="row">
         <!-- Cards de Livros -->
         <div class="col-md-12">
@@ -12,7 +18,9 @@
                             alt="{{this.titulo}}">
                         <div class="card-body">
                             <h5 class="card-title">{{this.titulo}}</h5>
-                            <p class="card-text">Progresso: {{this.progresso}}%</p>
+
+                            <p class="card-text">{{this.tag}}</p>
+                            
                             <div class="d-grid gap-2">
                                 <a href="/livro/consulta/{{this._id}}" class="btn btn-sm btn-dark">Ver Detalhes</a>
                                 <a class="btn btn-sm btn-outline-dark"
@@ -23,7 +31,7 @@
                                         <i class="bi bi-trash2-fill" id="icone-bi"> deletar livro</i>
                                     </a>
                                     <a href="/livro/alteraLivro/{{this._id}}">
-                                        <i class="bi bi-bookmark-heart-fill" id="icone-bi"> alterar livro</i>
+                                        <i class="bi bi-arrow-up-circle-fill" id="icone-bi"> alterar livro</i>
                                     </a>
                                 </p>
                             </div>
@@ -64,5 +72,40 @@
             </div>
             {{/if}}
         </div>
+    </div>
+</div>
+
+
+<div class="offcanvas offcanvas-start" id="demo">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">
+            Meu perfil
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {{#if usuario.length}}
+        {{#each usuario}}
+        <div class="card mb-4">
+            <img src="{{this.avatar}}" class="card-img-top" alt="Foto do Perfil">
+            <hr>
+            <div class="card-body">
+                <h5 class="card-title">{{this.nome}}</h5>
+                <br>
+                <p><a href="/usuario/alteraUsuario/{{this._id}}" class="btn btn-sm btn-dark">Editar perfil</a></p>
+                <p><a href="/usuario/estatisticas/{{this._id}}" class="btn btn-sm btn-outline-dark"><i
+                            class="bi bi-pie-chart-fill"> Ver
+                            minhas estatísticas</i></a></p>
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="card mb-4">
+            <img src="/images/avatar-padrao.png" class="card-img-top" alt="Foto do Perfil">
+            <div class="card-body">
+                <a href="/usuario/cadUsuario" class="btn btn-sm btn-dark">Criar perfil</a>
+            </div>
+        </div>
+        {{/if}}
     </div>
 </div>

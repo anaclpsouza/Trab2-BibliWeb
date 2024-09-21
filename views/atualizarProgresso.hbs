@@ -10,11 +10,7 @@
                     <p class="card-text"><b>Autor:</b> {{livros.autor}}</p>
                     <p class="card-text"><b>Editora: </b>{{livros.editora}}</p>
                     <p class="card-text"><b>Gênero:</b> {{livros.genero}}</p>
-                    {{#if livros.progresso}}
-                    <p class="card-text"><b>Início da leitura:</b> {{livros.dataInicio}}</p>
-                    {{else}}
-                    <p class="card-text"><b>Início da leitura:</b> Leitura não iniciada</p>
-                    {{/if}}
+                    <p class="card-text"><b>Descrição:</b> {{livros.texto}}</p>
                 </div>
             </div>
         </div>
@@ -81,9 +77,9 @@
                     <p class="text-muted">Resenha já criada. É possível criar apenas uma resenha por livro.</p>
                     <button type="button" class="btn btn-outline-dark">Ver Resenha</button>
                     {{else}}
-                    <p class="text-muted"> Ao adicionar resenha, o progresso do livro é dado como 100% e não é possível
+                    <p class="text-muted"> Ao adicionar uma resenha, não é possível
                         realizar
-                        atualizações.</p>
+                        atualizações de leitura.</p>
                     <form action="/livro/criarResenha/{{livros._id}}" method="POST">
                         <div class="estrela-options">
                             <!-- Estrelas de avaliação -->
@@ -104,9 +100,29 @@
                             <label for="resenha" class="form-label">Resenha</label>
                             <textarea class="form-control" id="comentario" name="resenha" rows="3"></textarea>
                         </div>
+                        {{#if condicaoData}}
+                        <div class="mb-3">
+                            <label for="data" class="form-label">Data de inicio da leitura</label>
+                            <input type="date" class="form-control" id="dataInicio" name="dataInicio" required>
+                        </div>
+                        {{/if}}
                         <div class="mb-3">
                             <label for="data" class="form-label">Data de término da leitura</label>
                             <input type="date" class="form-control" id="dataFim" name="dataFim" required>
+                        </div>
+                        {{#if }}
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="lido" value="lido" required />
+                                <label class="tag-label" for="lido"><i class="bi bi-bookmark-check-fill">
+                                        Lido</i></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="tag-check" type="radio" name="tag" id="abandonei" value="abandonado"
+                                    required />
+                                <label class="tag-label" for="abandonei"><i class="bi bi-bookmark-x-fill"></i>
+                                    Abandonado</i></label>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-dark">Enviar Resenha</button>
                     </form>

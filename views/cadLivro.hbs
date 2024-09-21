@@ -40,38 +40,21 @@
                             <label for="editora" class="form-label">Editora</label>
                             <input type="text" class="form-control" id="editora" name="editora" required>
                         </div>
-                        <br>
-                        {{!-- formulario de tags --}}
+                        
+        
                         <div class="mb-3">
                             <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="lido" value="lido" />
-                                <label class="tag-label" for="lido"><i
-                                        class="bi bi-bookmark-check-fill">Lido</i></label>
+                                <input class="tag-check" type="radio" name="tag" id="Físico" value="Físico" required/>
+                                <label class="tag-label" for="Físico"><i
+                                        class="bi bi-bookmark-check-fill">Físico</i></label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="nlido" value="nao-lido" />
-                                <label class="tag-label" for="nlido"><i class="bi bi-bookmark-dash-fill">Não
-                                        lido</i></label>
+                                <input class="tag-check" type="radio" name="tag" id="Ebook" value="Ebook" required/>
+                                <label class="tag-label" for="Ebook"><i class="bi bi-bookmark-dash-fill">E-book</i></label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="qroler" value="quero-ler" />
-                                <label class="tag-label" for="qroler"><i class="bi bi-bookmark-star-fill">Quero
-                                        ler</i></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="lendo" value="lendo" />
-                                <label class="tag-label" for="lendo"><i
-                                        class="bi bi-bookmark-fill"></i>Lendo</i></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="relendo" value="relendo" />
-                                <label class="tag-label" for="relendo"><i
-                                        class="bi bi-bookmark-star-fill"></i>Relendo</i></label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="tag-check" type="radio" name="tag" id="abandonei" value="abandonei" />
-                                <label class="tag-label" for="abandonei"><i
-                                        class="bi bi-bookmark-x-fill"></i>Abandonei</i></label>
+                                <input class="tag-check" type="radio" name="tag" id="Desejo" value="Desejo" required/>
+                                <label class="tag-label" for="Desejo"><i class="bi bi-bookmark-heart-fill">Lista de Desejos</i></label>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-dark">Salvar Livro</button>

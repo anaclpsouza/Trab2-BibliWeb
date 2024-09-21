@@ -1,0 +1,161 @@
+<div class="container mt-5 pt-5">
+    <!-- Título Principal -->
+    <div class="text-center mb-4">
+        <h1 class="display-5">Dashboard de Estatísticas</h1>
+        <p class="lead"><img src="{{usuario.avatar}}" style="width: 100px;" alt="Foto do Perfil"><b>{{usuario.nome}}
+            </b></p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm" style="height: 400px;">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Livros na Estante</h5>
+                    <div class="card-body d-flex">
+                        <div class="chart-container"
+                            style="flex: 1; display: flex; justify-content: center; align-items: center;">
+                            <canvas id="NaEstante" style="max-width: 100%; max-height: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Card Gêneros Na Estante -->
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm" style="height: 400px;">
+                <br>
+                <h5 class="card-title text-center">Gêneros na Estante </h5>
+                <div class="card-body d-flex">
+                    <div class="chart-container"
+                        style="flex: 1; display: flex; justify-content: center; align-items: center;">
+                        <canvas id="Generos" style="max-width: 100%; max-height: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-12">
+            <div class="card shadow-sm" style="height: 400px;">
+                <br>
+                <h5 class="card-title text-center">Status dos Livros</h5>
+                <div class="card-body d-flex">
+                    <div class="chart-container"
+                        style="flex: 1; display: flex; justify-content: center; align-items: center;">
+                        <canvas id="Progressos" style="max-width: 100%; max-height: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var Ficcao = {{ qntFiccao }};
+        var Romance = {{ qntRomance }};
+        var Fantasia = {{ qntFantasia }};
+        var Distopia = {{ qntDistopia }};
+        var Suspense = {{ qntSuspense }};
+        var Terror = {{ qntTerror }};
+        var Outros = {{ qntOutros }};
+
+        var generos = ["Ficcao", "Romance", "Fantasia", "Distopia", "Suspense", "Terror", "Outros"];
+        var generosDados = [Ficcao, Romance, Fantasia, Distopia, Suspense, Terror, Outros];
+        console.log("valores:" + generosDados);
+
+        // Cores em tons pastéis
+        var pastelColors = [
+            "#FFB3BA", // Rosa claro
+            "#FFDFBA", // Laranja claro
+            "#FFFFBA", // Amarelo claro
+            "#BAFFC9", // Verde claro
+            "#BAE1FF", // Azul claro
+            "#D7BDE2", // Lilás claro
+            "#F9E79F"  // Amarelo pastel
+        ];
+
+        new Chart("Generos", {
+            type: "pie",
+            data: {
+                labels: generos,
+                datasets: [{
+                    backgroundColor: pastelColors,
+                    data: generosDados
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'left',
+                        align: 'start'
+                    }
+                }
+            }
+        });
+
+        var qntFisicos = {{ qntFisicos }};
+        var qntEbook = {{ qntEbook }};
+        var qntDesejo = {{ qntDesejo }};
+
+
+        var formatos = ["Físicos", "Ebook", "Desejados"];
+        var formatosD = [qntFisicos, qntEbook, qntDesejo];
+        console.log("valores:" + formatosD);
+
+        // Cores em tons pastéis
+        var pastelColors = [
+            "#FFB3BA", // Rosa claro
+            "#BAE1FF", // Azul claro
+            "#D7BDE2", // Lilás claro
+        ];
+
+        new Chart("NaEstante", {
+            type: "pie",
+            data: {
+                labels: formatos,
+                datasets: [{
+                    backgroundColor: pastelColors,
+                    data: formatosD
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'left',
+                        align: 'start'
+                    }
+                }
+            }
+        });
+
+        var progresso = ["Lidos", "Lendo", "Não Lidos", "Abandonados"];
+        var progressoD =  [{{lidos}}, {{lendo}}, {{naoLidos}}, {{abandonados}}];
+
+        // Gráfico de Progresso dos Livros
+        new Chart("Progressos", {
+            type: "pie",
+            data: {
+                labels: progresso,
+                datasets: [{
+                    backgroundColor: ["#F9E79F", "#BAE1FF","#FFDFBA", "#BAFFC9"],
+                    data: progressoD
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'left',
+                        align: 'start'
+                    }
+                }
+            }
+        });
+
+    </script>

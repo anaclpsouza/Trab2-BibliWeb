@@ -8,4 +8,7 @@ router.post('/cadUsuario', controllerUsuario.cadUsuario);
 router.get('/alteraUsuario/:_id', controllerUsuario.alteraUsuario_get);
 router.post('/alteraUsuario/:_id', controllerUsuario.alteraUsuario);
 
+router.get('/estatisticas/:_id', controllerUsuario.estatisticas);
+
+
 module.exports = router;

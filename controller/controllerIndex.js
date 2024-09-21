@@ -6,6 +6,9 @@ exports.tela_principal = async function (req, res) {
     const user = await User.listaU()
     const genero = req.query.genero;
 
+    const busca = req.body.busca;
+    let condicao_busca = false;
+
     var todos = false;
     const ficcao = genero === 'Ficcao';
     const romance = genero === 'Romance';
@@ -31,6 +34,17 @@ exports.tela_principal = async function (req, res) {
             if (!vetorLivros || vetorLivros.length === 0) {
                 semLivros = "Ainda não há livros deste gênero cadastrados.";
             }
+        }
+
+        if (req.body.botaoBusca != undefined) {
+            vetorLivros = await Livro.listaBusca(busca)
+            condicao_busca = true
+            if (!vetorLivros || vetorLivros.length === 0) {
+                semLivros = "Ainda não há livros com este título.";
+            }
+        }
+        if (req.body.botaoCancelar != undefined) {
+            condicao_busca = false
         }
 
         vetorLivros.forEach((livro) => {
@@ -68,7 +82,9 @@ exports.tela_principal = async function (req, res) {
             Terror: terror,
             Outros: outros,
             semLivros: semLivros,
-            Todos: todos
+            Todos: todos,
+            busca: busca,
+            condicao_busca: condicao_busca
         };
         res.render('index', contexto);
     } catch (erro) {
@@ -79,7 +95,7 @@ exports.tela_principal = async function (req, res) {
 
 exports.tela_ajuda = async function (req, res) {
     contexto = {
-        titulo_pagina: "Ajuda",
+        titulo_pagina: "Ajuda"
     }
     res.render('ajuda', contexto)
 }
