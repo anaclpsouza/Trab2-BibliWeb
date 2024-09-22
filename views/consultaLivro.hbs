@@ -1,4 +1,5 @@
-<div class="container mt-5 pt-5 ">
+<div class="container mt-6 pt-5 ">
+    <h2>Consulta</h2>
     <div class="card mb-3" style="border: 1px solid var(--cor-primaria);">
         <div class="row g-0">
             <div class="col-md-4">
@@ -36,8 +37,9 @@
 
     <h2>Atualizações de Leitura</h2>
 
-    {{#if livro.progressoHistorico}}
+    
     {{#each livro.progressoHistorico}}
+    {{#if this.percentual}}
     <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#atualizacoes">
         <div class="card-body">
             <div class="progress mb-2">
@@ -50,8 +52,10 @@
             <p class="card-text"><small class="text-muted">Publicado em: {{data}}</small></p>
         </div>
     </div>
-    {{/each}}
     {{else}}
+    {{/if}}
+    {{/each}}
+
     {{#if condicao}}
     <p class="text-center text-muted">Você não registrou atualizações para esse livro.</p>
     {{else}}
@@ -59,14 +63,18 @@
     <p class="text-center"><a class="btn btn-sm btn-outline-dark"
             href="/livro/atualizarProgresso/{{livro._id}}">Adicionar Atualizações</a></p>
     {{/if}}
-    {{/if}}
+
     <h2>Resenha</h2>
     {{#if livro.resenha}}
     {{#each livro.resenha}}
     <div class="card mb-2" style="border: 1px solid var(--cor-primaria);" id="#resenha">
         <div class="card-body">
+            {{#if qntE}}
+            {{#each qntE}}
+            <h4 class="card-text" style="display: inline-flex;" id="estrelas">&#9733;</h4>
+            {{/each}}
+            {{/if}}
             <h4 class="card-text" id="titulo">{{this.titulo_resenha}}</h4>
-
             <p class="card-text" id="comentario">{{this.resenha}}</p>
             <p class="card-text"><small class="text-muted">Término da leitura: {{this.dataFim}}</small></p>
         </div>

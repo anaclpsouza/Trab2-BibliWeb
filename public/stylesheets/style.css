@@ -288,3 +288,7 @@ i {
 .footer a:hover {
   color: #4f8b1e;
 }
+
+#estrelas {
+  color: var(--cor-primaria);
+}

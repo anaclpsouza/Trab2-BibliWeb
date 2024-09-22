@@ -18,17 +18,18 @@ class LivroMongo {
         cliente = undefined;
     }
 
-    async cadLivro(titulo, genero, texto, autor, editora, tag, progresso = 0) {
+    // crud livros
+    async cadLivro(livro, progresso = 0) {
         await conexao_bd();
         const colecao = bd().collection("livros");
         var dataCriacao = new Date();
-        await colecao.insertOne({ titulo, genero, texto, autor, editora, tag, progresso, dataCriacao });
+        await colecao.insertOne({ titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, tag: livro.tag, progresso, dataCriacao });
     }
 
-    async alteraLivro(id, titulo, genero, texto, autor, editora, tag) {
+    async alteraLivro(livro) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        await colecao.updateOne({ _id: new mongodb.ObjectId(id) }, { $set: { titulo, genero, texto, autor, editora, tag } });
+        await colecao.updateOne({ _id: new mongodb.ObjectId(livro._id) }, { $set: { titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, tag: livro.tag } });
     }
 
     async consulta(id) {
@@ -51,6 +52,7 @@ class LivroMongo {
         }
     }
 
+    // outros cruds
     async atualizarProgresso(id, percentual, comentario, dtI = null) {
         await conexao_bd();
         const colecao = bd().collection("livros");

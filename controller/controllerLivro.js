@@ -9,15 +9,10 @@ exports.cadLivro_get = async function (req, res) {
 };
 
 exports.cadLivro = async function (req, res) {
-    const titulo = req.body.titulo;
-    const genero = req.body.genero;
-    const texto = req.body.texto;
-    const autor = req.body.autor;
-    const editora = req.body.editora;
-    const tag = req.body.tag;
+    var livro = req.body
 
     try {
-        await Livro.cadLivro(titulo, genero, texto, autor, editora, tag);
+        await Livro.cadLivro(livro);
         res.redirect('/');
     } catch (erro) {
         console.log("nao cadastrado")
@@ -77,18 +72,12 @@ exports.alteraLivro_get = async function (req, res) {
 };
 
 exports.alteraLivro = async function (req, res) {
-    const titulo = req.body.titulo;
-    const genero = req.body.genero;
-    const texto = req.body.texto;
-    const autor = req.body.autor;
-    const editora = req.body.editora;
-    const tag = req.body.tag;
-
-
-    const id = req.params._id
+    var livro = req.body;
+    var id = req.params._id
+    livro._id = id
 
     try {
-        await Livro.alteraLivro(id, titulo, genero, texto, autor, editora, tag);
+        await Livro.alteraLivro(livro);
         res.redirect('/');
 
     } catch (erro) {
@@ -105,6 +94,12 @@ exports.consulta = async function (req, res) {
     let dataFimV = false;
 
     let dataInicioFormatada, dataFimFormatada;
+
+    if (livro.resenha) {
+        var t = parseInt(livro.resenha[0].estrela);
+        console.log(t)
+        livro.resenha[0].qntE = Array(t).fill(1);   
+    }
 
 
     if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
@@ -241,9 +236,10 @@ exports.post_criarResenha = async function (req, res) {
     const dataFim = new Date(req.body.dataFim + "T00:00:00"); 
     const tag = req.body.tag; 
     const estrelas = parseInt(req.body.estrela);
+    let dataInicio = null;
 
     if (req.body.dataInicio) {
-        const dataInicio = new Date(req.body.dataInicio);
+        dataInicio = new Date(req.body.dataInicio);
         await Livro.atualizarProgresso(livroId, null, null, dataInicio)
     }
  
@@ -252,7 +248,7 @@ exports.post_criarResenha = async function (req, res) {
         
         if (tag === 'lido') {
             await Livro.criarResenha(livroId, tituloResenha, resenhaTexto, estrelas, dataFim, 'lido');
-            await Livro.atualizarProgresso(livroId, "100", null, null)
+            await Livro.atualizarProgresso(livroId, "100", "Progresso Finalizado", dataInicio)
             return res.redirect('/');
         }
 
