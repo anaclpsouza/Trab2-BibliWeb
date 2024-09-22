@@ -5,6 +5,7 @@ exports.tela_principal = async function (req, res) {
 
     const user = await User.listaU()
     const genero = req.query.genero;
+    const formato = req.query.formato;
 
     const busca = req.body.busca;
     let condicao_busca = false;

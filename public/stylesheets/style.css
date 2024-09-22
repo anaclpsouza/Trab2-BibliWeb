@@ -292,3 +292,7 @@ i {
 #estrelas {
   color: var(--cor-primaria);
 }
+
+option:hover {
+  color: var(--cor-secundaria);
+}

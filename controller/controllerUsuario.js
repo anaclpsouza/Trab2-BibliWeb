@@ -59,9 +59,9 @@ exports.estatisticas = async function (req, res) {
     let qntOutros = await Livro.qtdGenero("Outros")
 
     console.log(qntRomance)
-    let qntFisicos = await Livro.qntTag("Físico")
-    let qntEbook = await Livro.qntTag("Ebook")
-    let qntDesejo = await Livro.qntTag("Desejo")
+    let qntFisicos = await Livro.qntFormato("Físico")
+    let qntEbook = await Livro.qntFormato("Ebook")
+    let qntDesejo = await Livro.qntFormato("Desejo")
 
     const livroStatus = await Livro.statusLivros();
     console.log(livroStatus)

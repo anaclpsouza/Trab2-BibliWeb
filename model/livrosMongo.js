@@ -23,13 +23,13 @@ class LivroMongo {
         await conexao_bd();
         const colecao = bd().collection("livros");
         var dataCriacao = new Date();
-        await colecao.insertOne({ titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, tag: livro.tag, progresso, dataCriacao });
+        await colecao.insertOne({ titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, formato: livro.formato, progresso, dataCriacao });
     }
 
     async alteraLivro(livro) {
         await conexao_bd();
         const colecao = bd().collection("livros");
-        await colecao.updateOne({ _id: new mongodb.ObjectId(livro._id) }, { $set: { titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, tag: livro.tag } });
+        await colecao.updateOne({ _id: new mongodb.ObjectId(livro._id) }, { $set: { titulo: livro.titulo, genero: livro.genero, texto: livro.texto, autor: livro.autor, editora: livro.editora, formato: livro.formato } });
     }
 
     async consulta(id) {
@@ -148,6 +148,13 @@ class LivroMongo {
         return livros;
     }
 
+    async listaFormato(formato) {
+        await conexao_bd();
+        const colecao = bd().collection("livros");
+        const livros = await colecao.find({ formato: formato }).toArray();
+        return livros;
+    }
+
     async qtdGenero(genero) {
         await conexao_bd();
         const colecao = bd().collection("livros");
@@ -155,10 +162,10 @@ class LivroMongo {
         return qtd;
     }
 
-    async qntTag(tag) {
+    async qntFormato(Formato) {
         await conexao_bd()
         const colecao = bd().collection("livros")
-        const qtd = await colecao.count({ tag: tag })
+        const qtd = await colecao.count({ Formato: Formato })
         return qtd
     }
 

@@ -90,6 +90,7 @@ exports.consulta = async function (req, res) {
     var id = req.params._id
     var livro = await Livro.consulta(id)
 
+
     let dataInicioV = false;
     let dataFimV = false;
 
@@ -100,6 +101,9 @@ exports.consulta = async function (req, res) {
         console.log(t)
         livro.resenha[0].qntE = Array(t).fill(1);   
     }
+
+    var condicao = parseInt(livro.progresso) === 100;
+    console.log(condicao)
 
 
     if (Array.isArray(livro.progressoHistorico) && livro.progressoHistorico.length > 0) {
@@ -128,7 +132,7 @@ exports.consulta = async function (req, res) {
         titulo_pagina: "Detalhes",
         livro: livro,
         dataInicioV: dataInicioV,
-        condicao: livro.progresso === 100,
+        condicao: condicao,
         dt: dataInicioFormatada,
         dtF: dataFimFormatada,
         dataFimV: dataFimV
